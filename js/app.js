@@ -27,16 +27,31 @@ function addCourse(e){
 function readCourse(curso){
     //Crear objeto con el contenido del curso actual
     const infoCourse = {
-        image: curso.querySelector('img').src,
+        imagen: curso.querySelector('img').src,
         titulo: curso.querySelector('h4').textContent,
         precio: curso.querySelector('span').textContent,
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     }
-    // console.log(infoCourse)
+    // Comprobar si un elemento ya existe en el carrito
+    const exist = articulosCarrito.some(curso => curso.id === infoCourse.id)
+    if(exist){
+        
+        const cursos = articulosCarrito.map(curso => {
+            if(curso.id === infoCourse.id){
+                curso.cantidad++;
+                return curso;
+            }else {
+                return curso;
+            }
+        })
+        articulosCarrito = [...cursos];
 
-    //Agrega elementos al carrito
-    articulosCarrito = [...articulosCarrito, infoCourse]
+    }else{
+        //Agrega elementos al carrito
+        articulosCarrito = [...articulosCarrito, infoCourse]
+    }
+
     console.log(articulosCarrito)
     carritoOnHTML();
 }
@@ -48,12 +63,16 @@ function carritoOnHTML(){
 
     //Agrega el HTML del carrito en el tbody
     articulosCarrito.forEach( curso => {
+        const {imagen,titulo,precio,cantidad,id} = curso;
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><img src="${curso.image}"></td>
-            <td>${curso.titulo}</td>
-            <td>${curso.precio}</td>
-            <td>${curso.cantidad}</td>
+            <td><img src="${imagen}"></td>
+            <td>${titulo}</td>
+            <td>${precio}</td>
+            <td>${cantidad}</td>
+            <td>
+                <a href="#" class="borrar-curso" data-id="${id}"> X </a>
+            </td>
         `;
         //Agrega el HTML del carrito en el tbody
         contenedorCarrito.appendChild(row)
