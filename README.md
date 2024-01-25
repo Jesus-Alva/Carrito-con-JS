@@ -1,4 +1,4 @@
-#Carrito con JS
+# Carrito con JS
 
 Proyecto que pone en practica los conocimientos basicos de JavaScript
 
